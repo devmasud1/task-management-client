@@ -63,7 +63,7 @@ const NavBar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                className="menu bg-slate-800 menu-sm dropdown-content mt-3 z-[1] p-2 shadow  rounded-box w-52"
               >
                 {navItem}
               </ul>
@@ -74,7 +74,7 @@ const NavBar = () => {
             <ul className="menu menu-horizontal px-1">{navItem}</ul>
           </div>
           <div className="navbar-end">
-            <Link className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <Link to='/logIn' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
               log in
             </Link>
           </div>
