@@ -6,7 +6,7 @@ const Banner = () => {
   return (
     <div>
       <div
-        className="hero h-[98vh]"
+        className="hero h-[100vh]"
         style={{
           backgroundImage: "url(https://i.ibb.co/3449L44/bg.jpg)",
         }}
@@ -20,7 +20,7 @@ const Banner = () => {
             <p className="text-sky-300 lg:text-5xl md:text-4xl text-xl font-semibold pt-1 pb-5">
               Enhance and Improve Your Experience
             </p>
-            <Link to="/login" className="pt-3">
+            <Link to="/dashboard" className="pt-3">
               <AwesomeButton
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 size="small"

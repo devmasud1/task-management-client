@@ -1,17 +1,31 @@
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useContext } from "react";
+import { AuthContext } from "../../hooks/Provider/AuthProvider";
 
 const SignUp = () => {
+  const { createUser } = useContext(AuthContext);
+
   const handleSignUp = (e) => {
     e.preventDefault();
 
     const form = e.target;
 
-    const name = form.email.name;
-    const photoUrl = form.email.photoUrl;
+    const name = form.name.value;
+    const imageUrl = form.imageUrl.value;
     const email = form.email.value;
     const password = form.password.value;
+    console.log(imageUrl)
 
-    console.log(name, photoUrl, email, password);
+    createUser(email, password, name, imageUrl)
+      .then(() => {
+        const loadingToast = toast.loading("Logging...");
+        toast.success("Login successful", { id: loadingToast });
+      })
+      .catch((err) => {
+        toast.error("already used this email!", err.message);
+      });
+    form.reset();
   };
 
   return (
@@ -42,7 +56,7 @@ const SignUp = () => {
                 </label>
                 <input
                   type="text"
-                  name="photoUrl"
+                  name="imageUrl"
                   placeholder="Your photo"
                   className="input input-bordered"
                   required

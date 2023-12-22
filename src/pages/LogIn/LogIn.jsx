@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../hooks/Provider/AuthProvider";
+import { useContext } from "react";
+import toast from "react-hot-toast";
 
 const LogIn = () => {
+  const { GoogleLogIn, signInUser } = useContext(AuthContext);
 
   const handleLogIn = (e) => {
     e.preventDefault();
@@ -10,12 +14,28 @@ const LogIn = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    console.log(email, password);
+    const loadingToast = toast.loading("Logging...");
+    signInUser(email, password)
+      .then(() => {
+        toast.success("Login successful", { id: loadingToast });
+      })
+      .catch((err) => {
+        toast.error("something wrong!", err.message);
+      });
+    form.reset();
   };
 
   const handleGoogleLogIn = () => {
-
-  }
+    const loadingToast = toast.loading("Logging...");
+    GoogleLogIn()
+      .then((res) => {
+        toast.success("Login successful", { id: loadingToast });
+        console.log(res)
+      })
+      .catch((err) => {
+        toast.error("something wrong!", err.message);
+      });
+  };
 
   return (
     <div className="min-h-[85vh]">
@@ -61,8 +81,9 @@ const LogIn = () => {
                 </button>
               </div>
               <button
-              onClick={handleGoogleLogIn}
-              className="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">
+                onClick={handleGoogleLogIn}
+                className="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+              >
                 Log in with Google
               </button>
 

@@ -4,7 +4,10 @@ import Home from "../pages/Home/Home";
 import About from "../pages/Home/About/About";
 import Contact from "../pages/Home/Contact/Contact";
 import LogIn from "../pages/Login/Login";
-import SignUp from "../pages/Signup/Signup";
+import SignUp from "../pages/SignUp/SignUp";
+import Dashboard from "../pages/Dashboard/Dashboard";
+
+
 
 const Routes = createBrowserRouter([
     {
@@ -30,6 +33,10 @@ const Routes = createBrowserRouter([
             {
                 path: '/signUp',
                 element: <SignUp/>
+            },
+            {
+                path: '/dashboard',
+                element: <Dashboard/>
             },
         ]
     }
