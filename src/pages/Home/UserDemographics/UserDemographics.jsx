@@ -1,4 +1,12 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 const UserDemographics = () => {
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   const userTypes = [
     {
       type: "Developers",
@@ -24,7 +32,11 @@ const UserDemographics = () => {
 
   return (
     <section className="bg-gray-100 py-8">
-      <div className="w-11/12 mx-auto">
+      <div
+        className="w-11/12 mx-auto"
+        data-aos="fade-up"
+        data-aos-duration="3000"
+      >
         <h2 className="text-2xl font-semibold mb-4">
           Who Can Benefit from Our Platform?
         </h2>

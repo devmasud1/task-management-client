@@ -1,8 +1,15 @@
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/themes/theme-blue.css";
 import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const Banner = () => {
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   return (
     <div>
       <div
@@ -12,7 +19,11 @@ const Banner = () => {
         }}
       >
         <div className="hero-overlay bg-opacity-95"></div>
-        <div className="lg:w-3/4 w-full text-center ">
+        <div
+          className="lg:w-3/4 w-full text-center "
+          data-aos="fade-up"
+          data-aos-duration="3000"
+        >
           <div className="w-full space-y-2">
             <h1 className="text-sky-200 lg:text-7xl md:text-5xl text-3xl font-bold">
               Welcome To <br /> Task Management Platform
