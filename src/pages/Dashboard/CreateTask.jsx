@@ -1,98 +1,107 @@
 import axios from "axios";
-import { useContext } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { AuthContext } from "../../hooks/Provider/AuthProvider";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
+import { AuthContext } from "../../hooks/Provider/AuthProvider";
 
-const CreateTask = () => {
-  const { control, handleSubmit, reset } = useForm();
+const CreateTask = ({ tasks, setTasks }) => {
   const { user } = useContext(AuthContext);
 
-  const SubmitHandler = (data) => {
-    const dataToSend = {
-      ...data,
+  const [task, setTask] = useState({
+    id: "",
+    name: "",
+    description: "",
+    deadline: "",
+    priority: "low",
+    status: "todo",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTask({ ...task, [name]: value, id: uuidv4() });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // const updatedTasks = Array.isArray(tasks) ? [...tasks, task] : [task];
+    // localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    // setTasks(updatedTasks);
+
+    const sentTaskData = {
+      ...task,
       email: user?.email,
     };
-    const loadingToast = toast.loading("task creating...");
-    axios
-      .post(`http://localhost:5000/to-do`, dataToSend)
-      .then((res) => {
-        if (res.data.insertedId) {
-          toast.success("Successfully task added!", { id: loadingToast });
-          reset();
-        }
-      })
-      .catch((err) => {
-        toast.error("Something went wrong!", err.message);
-      });
+
+    axios.post(`https://task-management-server-ruddy.vercel.app/to-do`, sentTaskData).then((res) => {
+      if (res.data.insertedId) {
+        toast.success("Task created");
+        setTasks([...tasks, sentTaskData]);
+      }
+    });
+
+    
+
+    setTask({
+      id: "",
+      name: "",
+      description: "",
+      deadline: "",
+      priority: "low",
+      status: "todo",
+    });
   };
-  
+
   return (
     <div className="w-full md:w-3/4 mx-auto border-2 p-4 md:p-6 space-y-4">
       <h2 className="text-lg font-bold">Create New Task:</h2>
-      <form onSubmit={handleSubmit(SubmitHandler)}>
+      <form onSubmit={handleSubmit}>
         <div className="form-control">
-          <label htmlFor="title">Title</label>
-          <Controller
-            name="title"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                id="title"
-                className="input-field"
-              />
-            )}
+          <label htmlFor="title">Task Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={task.name}
+            onChange={handleInputChange}
+            className="input-field"
           />
         </div>
-        <div className="form-control my-2">
+        <div className="form-control my-2 mb-2">
           <label htmlFor="description">Description</label>
-          <Controller
+          <textarea
+            id="description"
             name="description"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <textarea
-                {...field}
-                id="description"
-                className="input-field"
-              ></textarea>
-            )}
-          />
+            value={task.description}
+            onChange={handleInputChange}
+            className="input-field"
+          ></textarea>
         </div>
-        <div className="flex flex-col md:flex-row md:justify-between gap-4 ">
+        <div className="flex flex-col md:flex-row md:justify-between gap-4">
           <div className="lg:w-1/2 form-control">
             <label htmlFor="deadline">Deadline</label>
-            <Controller
+            <input
+              type="date"
+              id="deadline"
               name="deadline"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="date"
-                  id="deadline"
-                  className="input-field"
-                />
-              )}
+              value={task.deadline}
+              onChange={handleInputChange}
+              className="input-field"
             />
           </div>
           <div className="lg:w-1/2 form-control">
             <label htmlFor="priority">Priority</label>
-            <Controller
+            <select
+              id="priority"
               name="priority"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <select {...field} id="priority" className="input-field">
-                  <option value="low">Low</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="high">High</option>
-                </select>
-              )}
-            />
+              value={task.priority}
+              onChange={handleInputChange}
+              className="input-field"
+            >
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
+            </select>
           </div>
         </div>
         <button
@@ -105,4 +114,5 @@ const CreateTask = () => {
     </div>
   );
 };
+
 export default CreateTask;

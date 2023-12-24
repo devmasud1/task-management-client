@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "../../hooks/Provider/AuthProvider";
 
 const SignUp = () => {
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -21,6 +24,7 @@ const SignUp = () => {
       .then(() => {
         const loadingToast = toast.loading("Logging...");
         toast.success("Login successful", { id: loadingToast });
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         toast.error("already used this email!", err.message);

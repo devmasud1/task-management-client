@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../hooks/Provider/AuthProvider";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 
 const LogIn = () => {
   const { GoogleLogIn, signInUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location?.state?.from?.pathname || "/";
 
   const handleLogIn = (e) => {
     e.preventDefault();
@@ -18,6 +22,7 @@ const LogIn = () => {
     signInUser(email, password)
       .then(() => {
         toast.success("Login successful", { id: loadingToast });
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         toast.error("something wrong!", err.message);
@@ -28,9 +33,9 @@ const LogIn = () => {
   const handleGoogleLogIn = () => {
     const loadingToast = toast.loading("Logging...");
     GoogleLogIn()
-      .then((res) => {
+      .then(() => {
         toast.success("Login successful", { id: loadingToast });
-        console.log(res)
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         toast.error("something wrong!", err.message);

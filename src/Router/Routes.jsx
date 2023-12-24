@@ -6,6 +6,7 @@ import Contact from "../pages/Home/Contact/Contact";
 import LogIn from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import PrivateRoutes from "./PrivateRoutes";
 
 
 
@@ -36,7 +37,7 @@ const Routes = createBrowserRouter([
             },
             {
                 path: '/dashboard',
-                element: <Dashboard/>
+                element:<PrivateRoutes> <Dashboard/></PrivateRoutes>
             },
         ]
     }
